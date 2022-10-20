@@ -1,0 +1,95 @@
+name: 'Autoformat'
+description: 'Autoformat code using dotnet format'
+inputs:
+  projects:  # id of input
+    description: 'Projects to autoformat'
+    required: false
+    default: ''
+  script:
+    description: 'A script to run to autoformat'
+    required: false
+    default: ''
+  git_user_email:
+    description: "The committer's email for the patch"
+    required: false
+    default: 'autoformat@example.com'
+  git_user_name:
+    description: "The committer's name for the patch"
+    required: false
+    default: 'GitHub Actions Autoformatter'
+  git_commit_message:
+    description: 'The commit message to use for the patch'
+    required: false
+    default: 'Auto-format source code'
+  artifact:
+    description: 'The name of the artifact where the patch is stored'
+    required: true
+    default: 'autoformat'
+
+runs:
+  using: "composite"
+  steps:
+    - name: 'Checkout repo'
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+        repository: ${{ github.event.pull_request.head.repo.full_name }}
+        ref: ${{ github.event.pull_request.head.sha }}
+
+    - id: autoformat
+      name: 'Autoformat code'
+      shell: bash
+      run: |
+        set -exo pipefail
+
+        SCRIPT=${{ inputs.script}}
+        PROJECTS=(${{ inputs.projects }})
+
+        mkdir -p autoformat
+
+        if test -n "$SCRIPT"; then
+          echo "Executing $SCRIPT..."
+          $SCRIPT
+        elif [[ ${#PROJECTS[@]} -gt 0 ]]; then
+          # Otherwise loop over any projects that were given to us.
+          DIR=$(pwd)
+          pushd .
+          cd ..
+          for PROJECT in "${PROJECTS[@]}"; do
+            dotnet format whitespace "$DIR/$PROJECT"
+          done
+          popd
+        else
+          # format the whole repository if neither a script nor any projects were specified.
+          DIR=$(pwd)
+          pushd .
+          cd ..
+          dotnet format whitespace --folder "$DIR"
+          popd
+        fi
+
+        if git diff --exit-code >/dev/null; then
+          echo "No code formatting occurred"
+        else
+          git add -- .
+          if test -n "${{ inputs.git_user_email }}"; then
+            git config --global user.email "${{ inputs.git_user_email }}"
+          fi
+          if test -n "${{ inputs.git_user_name }}"; then
+            git config --global user.name "${{ inputs.git_user_name }}"
+          fi
+          git commit -m "${{ inputs.git_commit_message }}"
+
+          git format-patch HEAD^..HEAD --stdout > ./autoformat/autoformat.patch
+        fi
+
+        if test -n "${{ github.event.number }}"; then
+          echo "${{ github.event.number }}" > ./autoformat/PR
+        fi
+
+    - id: upload
+      name: 'Upload patch'
+      uses: actions/upload-artifact@v3
+      with:
+        name: ${{ inputs.artifact }}
+        path: autoformat/
