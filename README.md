@@ -25,6 +25,10 @@ Add a new file named `autoformat.yml` in the `.github/workflows` directory in yo
 name: Autoformat code
 on: pull_request
 
+# This action only need a single permission in order to autoformat the code.
+permissions:
+  contents: read
+
 jobs:
   autoformat-code:
     name: Autoformat code
