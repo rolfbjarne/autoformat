@@ -50,7 +50,7 @@ uses: rolfbjarne/autoformat@v0.1
     # If neither 'script' nor 'projects' is specified, the action will run 'dotnet format whitespace' on the entire repository.
     script: ''
 
-    # Space-delimited list of projects (relative to the root of the repository) to format.
+    # Space-delimited list of projects or solutions (relative to the root of the repository) to format.
     # This option has no effect if 'script' is specified.
     # If neither 'script' nor 'projects' is specified, the action will run 'dotnet format whitespace' on the entire repository.
     projects: ''
