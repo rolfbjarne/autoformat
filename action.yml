@@ -25,6 +25,10 @@ inputs:
     description: 'The name of the artifact where the patch is stored'
     required: true
     default: 'autoformat'
+  onlyFilesModifiedInPullRequest:
+    description: 'Only format files that were changed in the pull request'
+    required: false
+    default: false
 
 runs:
   using: "composite"
@@ -44,6 +48,8 @@ runs:
 
         SCRIPT=${{ inputs.script}}
         PROJECTS=(${{ inputs.projects }})
+
+        env -0 | sort -z | tr '\0' '\n' || true
 
         mkdir -p autoformat
 
@@ -71,7 +77,16 @@ runs:
         if git diff --exit-code >/dev/null; then
           echo "No code formatting occurred"
         else
-          git add -- .
+          if ${{ inputs.onlyFilesModifiedInPullRequest }}; then
+            FILES=(git diff --diff-filter=d "$GIT_BASE_REF"..$GIT_HEAD_REF" --name-only -z)
+            while IFS= read -r -d $'\0' file; do
+                if test -f "$file"; then
+                  git add -- "$file"
+                fi
+            done < <(git diff --diff-filter=d "$GIT_BASE_REF"..$GIT_HEAD_REF" --name-only -z)
+          else
+            git add -- .
+          fi
           if test -n "${{ inputs.git_user_email }}"; then
             git config --global user.email "${{ inputs.git_user_email }}"
           fi

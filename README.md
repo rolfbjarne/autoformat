@@ -66,4 +66,7 @@ uses: rolfbjarne/autoformat@v0.1
 
     # The name of the artifact where the patch is stored
     artifact: 'autoformat'
+
+    # Only consider autoformatting for files modified in the pull request.
+    onlyFilesModifiedInPullRequest: false
 ```
