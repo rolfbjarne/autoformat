@@ -81,6 +81,7 @@ runs:
             pwd
             ls -la
             BASE_REF=${{ github.event.pull_request.head.sha }}
+            echo BASE_REF=$BASE_REF
             git diff --diff-filter=d "${BASE_REF}..HEAD" --name-only || true
             while IFS= read -r -d $'\0' file; do
                 echo "Found $file"
