@@ -78,6 +78,7 @@ runs:
           echo "No code formatting occurred"
         else
           if ${{ inputs.onlyFilesModifiedInPullRequest }}; then
+            ls -la
             git diff --diff-filter=d "$GIT_BASE_REF..$GIT_HEAD_REF" --name-only || true
             while IFS= read -r -d $'\0' file; do
                 echo "Found $file"
