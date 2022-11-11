@@ -44,7 +44,7 @@ jobs:
 ## Configuration
 
 ```yaml
-uses: rolfbjarne/autoformat@v0.1
+uses: rolfbjarne/autoformat@v0.2
   with:
     # A script to execute that will run 'dotnet format' (or any other logic that changes any committed files)
     # If neither 'script' nor 'projects' is specified, the action will run 'dotnet format whitespace' on the entire repository.
