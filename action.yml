@@ -40,6 +40,20 @@ runs:
         repository: ${{ github.event.pull_request.head.repo.full_name }}
         ref: ${{ github.event.pull_request.head.sha }}
 
+    - id: Debug
+      name: 'Debug GH'
+      shell: bash
+      run: |
+        cat <<<EOF
+        ${{toJson(github.event.pull_request)}}
+        EOF
+
+    - name: Dump GitHub context
+      id: github_context_step
+      run: env
+      env:
+        JSON: ${{ toJSON(github) }}
+
     - id: autoformat
       name: 'Autoformat code'
       shell: bash
