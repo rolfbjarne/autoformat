@@ -84,12 +84,12 @@ runs:
             ls -la
             BASE_REF=${{ github.event.pull_request.base.sha }}
             HEAD_REF=${{ github.event.pull_request.head.sha }}
-            git diff --diff-filter=d "${BASE_REF}..${HEAD_REF}" --name-only || true
+            git diff --diff-filter=d "${BASE_REF}...${HEAD_REF}" --name-only || true
             while IFS= read -r -d $'\0' file; do
                 if test -f "$file"; then
                   git add -- "$file"
                 fi
-            done < <(git diff --diff-filter=d "${BASE_REF}..${HEAD_REF}" --name-only -z)
+            done < <(git diff --diff-filter=d "${BASE_REF}...${HEAD_REF}" --name-only -z)
             if git diff --staged --exit-code >/dev/null; then
               echo "No code formatting occurred"
               NO_FORMATTING=1
