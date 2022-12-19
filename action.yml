@@ -44,9 +44,10 @@ runs:
       name: 'Debug GH'
       shell: bash
       run: |
-        cat <<<EOF
-        ${{toJson(github.event.pull_request)}}
-        EOF
+        cat <<<EOFEOF
+        ${{toJson(github)}}
+        EOFEOF
+        exit 0
 
     - name: Dump GitHub context
       id: github_context_step
