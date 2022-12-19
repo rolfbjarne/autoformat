@@ -50,6 +50,7 @@ runs:
 
     - name: Dump GitHub context
       id: github_context_step
+      shell: bash
       run: env
       env:
         JSON: ${{ toJSON(github) }}
