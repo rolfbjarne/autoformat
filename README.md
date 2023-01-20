@@ -11,7 +11,7 @@ First add an [.editorconfig][1] file describing the desired
 code style of the repository (unless you want the default code style in .NET).
 
 Once the .editorconfig file is in place, the next step is to fix all the code
-style issues in the repository. If you're only fixing whitespace issues, the
+style issues in the repository. If you're only fixing formatting issues, the
 following command can fix the entire repository (when executed from the root
 of the repository):
 
