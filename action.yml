@@ -46,7 +46,7 @@ runs:
       run: |
         set -exo pipefail
 
-        SCRIPT=${{ inputs.script}}
+        SCRIPT="${{ inputs.script }}"
         PROJECTS=(${{ inputs.projects }})
 
         # env -0 | sort -z | tr '\0' '\n' || true
