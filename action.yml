@@ -1,4 +1,4 @@
-name: 'Autoformat'
+name: 'Autoformatter'
 description: 'Autoformat code using dotnet format'
 inputs:
   projects:  # id of input
