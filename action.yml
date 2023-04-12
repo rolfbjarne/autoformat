@@ -1,5 +1,8 @@
 name: 'Autoformatter'
 description: 'Autoformat code using dotnet format'
+branding:
+  icon: 'edit'
+  color: 'blue'
 inputs:
   projects:  # id of input
     description: 'Projects to autoformat'
