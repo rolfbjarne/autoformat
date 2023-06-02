@@ -32,6 +32,15 @@ inputs:
     description: 'Only format files that were changed in the pull request'
     required: false
     default: false
+  dotnetExecutable:
+    description: 'The path to the "dotnet" executable to use'
+    required: false
+    default: 'dotnet'
+  workingDirectory:
+    description: 'The working directory when formatting using "dotnet format". This does not apply when using a custom script.'
+    required: false
+    default: '..'
+
 
 runs:
   using: "composite"
@@ -51,6 +60,8 @@ runs:
 
         SCRIPT="${{ inputs.script }}"
         PROJECTS=(${{ inputs.projects }})
+        DOTNET="${{ inputs.dotnetExecutable }}"
+        WORKING_DIRECTORY="${{ inputs.workingDirectory }}"
 
         # env -0 | sort -z | tr '\0' '\n' || true
 
@@ -63,17 +74,17 @@ runs:
           # Otherwise loop over any projects that were given to us.
           DIR=$(pwd)
           pushd .
-          cd ..
+          cd "$WORKING_DIRECTORY"
           for PROJECT in "${PROJECTS[@]}"; do
-            dotnet format whitespace "$DIR/$PROJECT"
+            "$DOTNET" format whitespace "$DIR/$PROJECT"
           done
           popd
         else
           # format the whole repository if neither a script nor any projects were specified.
           DIR=$(pwd)
           pushd .
-          cd ..
-          dotnet format whitespace --folder "$DIR"
+          cd "$WORKING_DIRECTORY"
+          "$DOTNET" format whitespace --folder "$DIR"
           popd
         fi
 
