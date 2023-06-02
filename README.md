@@ -111,6 +111,13 @@ uses: rolfbjarne/autoformat@v0.2
 
     # Only consider autoformatting for files modified in the pull request.
     onlyFilesModifiedInPullRequest: false
+
+    # The .NET executable to use to run 'dotnet format ...'
+    dotnetExecutable: 'dotnet'
+
+    # The working directory to use when running 'dotnet format ...'.
+    # This does not apply when using a custom script.
+    workingDirectory: '..'
 ```
 
 [1]: https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/code-style-rule-options
