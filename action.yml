@@ -88,6 +88,9 @@ runs:
           popd
         fi
 
+        # shut down any build servers we may have started.
+        "$DOTNET" build-server shutdown || true
+
         NO_FORMATTING=
         if git diff --exit-code >/dev/null; then
           echo "No code formatting occurred"
