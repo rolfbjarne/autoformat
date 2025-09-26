@@ -115,9 +115,12 @@ uses: rolfbjarne/autoformat@v0.4
     # The .NET executable to use to run 'dotnet format ...'
     dotnetExecutable: 'dotnet'
 
-    # The working directory to use when running 'dotnet format ...'.
+    # The working directory to use when running 'dotnet format ...'.
     # This does not apply when using a custom script.
     workingDirectory: '..'
+
+    # Whether the source code should be checked out or not (disable if checked out before running this task)
+    checkoutSource: true
 ```
 
 [1]: https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/code-style-rule-options

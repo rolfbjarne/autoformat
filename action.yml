@@ -40,6 +40,10 @@ inputs:
     description: 'The working directory when formatting using "dotnet format". This does not apply when using a custom script.'
     required: false
     default: '..'
+  checkoutSource:
+    description: 'Whether the source code should be checked out or not (disable if checked out before running this task)'
+    required: false
+    default: true
 
 
 runs:
@@ -47,6 +51,7 @@ runs:
   steps:
     - name: 'Checkout repo'
       uses: actions/checkout@v4
+      if: ${{ inputs.checkoutSource }}
       with:
         fetch-depth: 0
         repository: ${{ github.event.pull_request.head.repo.full_name }}
