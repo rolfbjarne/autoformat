@@ -125,3 +125,4 @@ uses: rolfbjarne/autoformat@v0.4
 
 [1]: https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/code-style-rule-options
 [2]: https://github.com/rolfbjarne/autoformat-push
+
